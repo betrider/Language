@@ -42,6 +42,11 @@
 37.해시테이블
 38.Call by Value , Call by Reference
 39.배열자르기
+40.sum(합),max(최대값),min(최소값)
+41.반올림,버림,내림,올림
+42.절대값
+43.최대값(max값)
+44.배열 뒤집기
 
 1.산술연산자 
 a + b      a와 b를 더함
@@ -389,3 +394,6 @@ abs(변수)
 43.최대값(max값)
 import sys
 sys.maxsize
+
+44.배열뒤집기
+list.reverse()
