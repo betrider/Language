@@ -958,6 +958,10 @@ combo.text =  콤보박스 선택한 값 보이게
 combo.value = 인수값 보이게
 combo.selectedindex = 선택한 순번
 
+If CNE_TYPE.SelectedValue = "" Then 없을때만 데이터 넣어주기
+            SVC_TYPE.SelectedValue = "01"       'Service Type
+        End If
+
 ********************************* 콤보박스(combobox)선택후 버튼클릭하면 그리드(grid)에 일괄적으로 데이터 집어넣기  *********************************
 Private Sub Type_btn_Click(sender As System.Object, e As System.EventArgs) Handles Type_btn.Click
         If Me.Visible AndAlso MsgBoxSC("배차유형 등록하시겠습니까?", MessageBoxButtons.YesNo) = MsgBoxResult.Yes Then
@@ -2644,3 +2648,92 @@ Recv.Contains(Item) = True
 
 **날짜 24시간
 System.DateTime.Now.ToString("yyyyMMdd HH-mm")
+
+**IP,MACADDRESS 로그아웃정보 로그 남기기
+Dim IP4Address As String = String.Empty
+                    For Each IPA As IPAddress In Dns.GetHostAddresses(Dns.GetHostName())
+                        If IPA.AddressFamily.ToString() = "InterNetwork" Then
+                            IP4Address = IPA.ToString()
+                            Exit For
+                        End If
+                    Next
+
+                    Dim nics() As NetworkInterface = NetworkInterface.GetAllNetworkInterfaces
+                    Dim mac As String = nics(0).GetPhysicalAddress.ToString()
+
+                    Dim db As New DBA()
+                    Dim sql As SqlBox
+                    sql = New SqlBox("Login@InsertLog")
+                    sql.Params("USR_ID") = SessionInfo.UserID
+                    sql.Params("MSG") = "Logout"
+                    sql.Params("IP") = IP4Address
+                    sql.Params("MAC_ADDR") = mac
+                    db.SqlSet(sql.Text)
+                    
+**파일 열기
+Dim p As New System.Diagnostics.Process
+        Dim s As New System.Diagnostics.ProcessStartInfo("D:\ABC\YJIT.SC.FMS\bin\Debug\TMP_OUTPUT\11.xlsx")
+        s.UseShellExecute = True
+        s.WindowStyle = ProcessWindowStyle.Normal
+        p.StartInfo = s
+        p.Start()                  
+                    
+**엔터키 입력받기
+If e.KeyCode = Keys.Enter Then
+            SearchBlNo()
+        End If                   
+        
+**엑셀 EXPORT
+Private Sub ExcelData()
+        Dim View As DevExpress.XtraGrid.Views.Grid.GridView = CType(WG2.MainView, DevExpress.XtraGrid.Views.Grid.GridView)
+        If Not View Is Nothing Then
+            If dlgSaveExcel.ShowDialog() = DialogResult.OK Then
+                View.OptionsPrint.ExpandAllDetails = True
+                View.ExportToXls(dlgSaveExcel.FileName)
+                If MsgBoxLocalized("Do you want open this file?", MessageBoxButtons.YesNo, "Open", MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then '메시지박스 O
+                    Dim process As System.Diagnostics.Process = New System.Diagnostics.Process()
+                    process.StartInfo.FileName = dlgSaveExcel.FileName
+                    process.StartInfo.Verb = "Open"
+                    process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
+                    process.Start()
+                End If
+                'MsgBoxLocalized("Excel export complete!", , True) '메시지박스 X
+            End If
+        End If
+End Sub
+
+**엑셀 IMPORT
+Public Sub UploadExcel()
+        Dim sExcelPath As String
+        Dim dlgExcel As New OpenFileDialog
+
+        With dlgExcel
+            .Title = "Open excel file..."
+            .Filter = "Excel Spreadsheets (*.xls)|*.xls|Excel 2007 and later (*.xlsx)|*.xlsx"
+            .FilterIndex = 1
+            .CheckFileExists = False
+        End With
+
+        If dlgExcel.ShowDialog() = DialogResult.OK Then
+            sExcelPath = dlgExcel.FileName
+        Else
+            Exit Sub
+        End If
+
+        'convert excel file to dataset
+        Dim dsExcel As DataSet = ExcelConnection.ImportExcel(sExcelPath)
+        Dim dtExcel As DataTable = dsExcel.Tables(0)
+
+        For i = 0 To GV1.Columns.Count - 1
+            dtExcel.Columns(i).ColumnName = GV1.Columns(i).FieldName
+        Next
+
+        'Finally, display data to grid
+
+        Dim dt As DataTable = dtExcel.Copy
+
+        WG1.DataSource = dt
+
+        Me.DataState = UI.DataStates.New
+        
+End Sub
