@@ -958,6 +958,8 @@ combo.text =  콤보박스 선택한 값 보이게
 combo.value = 인수값 보이게
 combo.selectedindex = 선택한 순번
 
+SHIPPING_LINE.SelectedIndex > 0 데이터 있을때만
+
 If CNE_TYPE.SelectedValue = "" Then 없을때만 데이터 넣어주기
             SVC_TYPE.SelectedValue = "01"       'Service Type
         End If
@@ -2737,3 +2739,42 @@ Public Sub UploadExcel()
         Me.DataState = UI.DataStates.New
         
 End Sub
+
+**Bizservice - 
+Public Overridable Function SendYTOInterface(ByVal ds As DataSet) As DataSet Implements IBizService.SendYTOInterface
+            Dim dt As DataTable = New DataTable
+            dt.Columns.Add("USERID")
+            dt.Columns.Add("PASSWORD")
+            dt.Columns.Add("DOMAIN")
+            dt.Rows.Add()
+            dt.Rows(0)("USERID") = "ADMIN"
+            dt.Rows(0)("PASSWORD") = "0000"
+            dt.Rows(0)("DOMAIN") = "ICSK.SCM.COM"
+            dt.TableName = "WCF_CLIENT_INFO"
+            ds.Tables.Add(dt)
+
+            Dim dictReturn As New Dictionary(Of String, Object)
+            Dim Params As Object = Nothing
+            Params = {ds, False}
+            processSessionDomain(ds.Tables("WCF_CLIENT_INFO"))
+            dictReturn = invokeMethod("YJIT.Biz.HBLIO01", "SaveExcelData", Params)
+            Return dict2Ds(dictReturn, Nothing, "")
+        End Function
+        
+**FOR문 거꾸로
+Try
+            For i = params.Tables("FWG1").Rows.Count - 1 To -1 Step -1 'LGD TARIFF FLAG값 I로 변경
+                If params.Tables("FWG1").Rows(i)("INS_USR").ToString = "LGD" Then
+                    If params.Tables("FWG1").Rows(i)("_INSFLAG").ToString = "U" Then
+                        params.Tables("FWG1").Rows(i)("_INSFLAG") = "I"
+                    Else
+                        params.Tables("FWG1").Rows.Remove(params.Tables("FWG1").Rows(i))
+                    End If
+                End If
+            Next
+        Catch ex As Exception
+
+        End Try
+        
+**선택값만 가지고오기
+GV1.GetDataRow(GV1.FocusedRowHandle).SetModified()

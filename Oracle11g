@@ -1535,3 +1535,28 @@ SELECT * FROM USER_SOURCE WHERE TYPE = 'PROCEDURE' AND TEXT LIKE '%USP_WO_PROFIT
 
 *함수 내용 검색
 SELECT * FROM USER_SOURCE WHERE TYPE = 'FUNCTION' AND TEXT LIKE '%USP_WO_PROFIT%'
+
+*커서루프(CURSOR)
+OPEN C1;
+               
+               LOOP
+                 
+                FETCH C1 INTO C1_REC; --담을 변수를 INTO 안에 넣어야함
+                EXIT WHEN C1%NOTFOUND;    
+                
+                BEGIN
+                    v_query := ALTER TABLE C1_REC.TABLENAME RENAME TO 'DD_'||C1_REC.TABLENAME
+                END;               
+                              
+               END LOOP; 
+               
+CLOSE C1;
+
+*커서선언,레코드 선언
+CURSOR C1 IS
+    SELECT ~~ FROM ~~;
+    
+C1_REC C1%ROWTYPE;
+
+
+
