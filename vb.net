@@ -2778,3 +2778,42 @@ Try
         
 **선택값만 가지고오기
 GV1.GetDataRow(GV1.FocusedRowHandle).SetModified()
+
+**콤보박스 선택값에 따라 다른 콤보박스 가지고 올때
+Try
+            Dim searchParams As Dictionary(Of String, Object)
+            Dim dataParams As Dictionary(Of String, Object)
+            Dim groupCode As String = ""
+
+            If REQ_SVC.SelectedValue = "AIR" Then
+                groupCode = "A07"
+            ElseIf REQ_SVC.SelectedValue = "SEA" Then
+                groupCode = "B07"
+            ElseIf REQ_SVC.SelectedValue = "TMS" Then
+                groupCode = "T06"
+            Else
+                groupCode = ""
+            End If
+            ' Service Term
+            searchParams = New Dictionary(Of String, Object)
+            dataParams = New Dictionary(Of String, Object)
+            dataParams.Add("GroupCode", groupCode)
+            dataParams.Add("NameType", "A")
+            Dim dt As DataTable = New DataTable
+            dt.Columns.Add("CODE")
+            dt.Columns.Add("NAME")
+            dt.Rows.Add()
+            dt.Rows(0)("CODE") = ""
+            dt.Rows(0)("NAME") = "--Select--"
+            SVC_TYPE.DataSource = dt '에러날 경우 --Select--만 표시
+            dt.Merge(Common.CodeServiceAPI.GetCodeList("CommonCode", searchParams, dataParams))
+            SVC_TYPE.DataSource = dt
+        Catch ex As Exception
+
+        End Try
+        
+*파일이름 가지고오기
+
+*그리드 속성 SORT 초기화,검색창 없애기
+GV1.ClearSorting() 
+GV1.HideFindPanel()

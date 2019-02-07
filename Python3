@@ -50,8 +50,6 @@
 45.문자열 포함
 46.배열 최대값,최소값 인덱스
 47.아스키코드 변환
-48.for 문 반대로
-49.반복문 for&while 빠져나가기 break
 
 1.산술연산자 
 a + b      a와 b를 더함
@@ -355,9 +353,6 @@ for i in count.items() or count.values() or count.keys()
 ex)collect = defaultdict(<class 'int'>, {'AA': 3})
 'AA' in collect => true 
 
-max(collect.keys()) 최대값 키 출력
-max(collect.values()) 최대값 개수
-
 38.Call by Value , Call by Reference
 따로 설정하는건 없고 값에따라 자동설정됨
 
@@ -415,13 +410,6 @@ if 'a' in S:
 list.index(max(list))
 list.index(min(list))
 
-47.아스키코드 변환
+46.아스키코드 변환
 문자열->아스키코드 : ord('Z') = 90
 아스키코드->문자열 : chr(90) = Z
-
-48.for 문 반대로
-정상 : for i in range(len(a)):
-					i
-					
-반대 : for i in range(len(a)-1,-1,-1):
-					i

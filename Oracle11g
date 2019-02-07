@@ -694,6 +694,8 @@ SELECT * --COUNT(*)
                              AND VENDOR_NO = A.VENDOR_NO 
                              AND SKU_YYMM = A.SKU_YYMM  
                              AND SKU_NO = A.SKU_NO )
+                             
+EXISTS (SELECT 1 FROM LGD_SR_MST WHERE INVOICE_NO = B.DOC_NO)
 
 -----------------------------------------golden 사용해서 엑셀(EXCEL)파일 DB에 업데이트 시키기------------------------------
 --select * from CO_CUSTOMER_UP1 where Code LIKE 'AD86ES%';
