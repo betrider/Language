@@ -154,7 +154,37 @@ BEGIN
 			GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE_NAME TO USER_NAME
 		)
 		32.소수점 포맷 SELECT TO_CHAR('12345.12345','FM999990.000') FROM DUAL => 12345.123
-	
+		33.디비링크,유저링크 : 디비링크명@유저링크.테이블명
+		34.테이블 목록 보기 : SELECT * FROM TAB
+		35.숫자함수 (
+			(1)ROUND --반올림
+				SELECT ROUND('12345.12345',-1) FROM DUAL => 12350
+			(2)TRUNC --절삭
+				SELECT TRUNC('12345.12345',-1) FROM DUAL => 12340
+				or
+				SELECT SYSDATE,							 => 2019-03-29 오후 5:37:41
+					   TRUNC(SYSDATE, 'MI'),			 => 2019-03-29 오후 5:37:00
+					   TRUNC(SYSDATE, 'HH24'),			 => 2019-03-29 오후 5:00:00
+					   TRUNC(SYSDATE, 'DD')				 => 2019-03-29
+					   TRUNC(SYSDATE),					 => 2019-03-29
+					   TRUNC(SYSDATE, 'DAY'),			 => 2019-03-24
+					   TRUNC(SYSDATE, 'MONTH'),		     => 2019-03-01
+					   TRUNC(SYSDATE, 'YEAR'),			 => 2019-01-01
+				  FROM DUAL
+			(3)MOD --나머지
+				SELECT MOD(15,10) FROM DUAL => 5
+		)		
+		36.테이블 항목 변경 ALTER (
+			(1)ALTER TABLE을 이용한 COLUMN 추가
+				ALTER TABLE 테이블명 ADD(컬럼명 데이터타입)
+				ALTER TABLE 테이블명 ADD(컬럼명 데이터타입 default디폴트값)
+
+			(2)ALTER TABLE을 이용한 COLUMN 변경
+				ALTER TABLE 테이블명 MODIFY(컬럼명 데이터타입)
+
+			(3)ALTER TABLE을 이용한 COLUMN 삭제
+				LTER TABLE 테이블명 DROP(컬럼명 데이터타입)
+		)
 	END
 	
 	BEGIN --2.toadShortCutKey
