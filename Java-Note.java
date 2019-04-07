@@ -98,6 +98,9 @@ public class java {
 	
 	public void jsp(){
 		
+		jsp form태그 속성
+		참조:https://m.blog.naver.com/PostView.nhn?blogId=james2021&logNo=30076048663&proxyReferer=https%3A%2F%2Fwww.google.com%2F
+		
 		~디렉티브 형식 저장(JSP 페이지에 대한 설정 정보 지정)
 		page : JSP 페이지에 대한 정보 지정
 		taglib : JSP 페이지에서 사용할 태그 라이브러리 지정
