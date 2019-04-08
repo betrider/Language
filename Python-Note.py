@@ -345,10 +345,9 @@ class Python3:
 		47.아스키코드 변환
 			문자열->아스키코드 : ord('Z') = 90 
 			아스키코드->문자열 : chr(90) = Z 
-		
+	
 	def shortCutKey():
 		
 	def notePad():
-		
 		
 

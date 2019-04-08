@@ -299,7 +299,11 @@ BEGIN
 			
 		*IN 1000개 넘어갈때
 			SELECT * FROM XXX WHERE ID IN (1,2,3,..) -> SELECT * FROM XXX WHERE (0,ID) IN ((0,1), (0,2), (0,3)..)
+<<<<<<< HEAD
 			  
+=======
+			 
+>>>>>>> dfb4862d3dd8c867642b6f82d37e8175ed36f55a
 		*계층형 쿼리 연결된값 전부 가져오기
 			SELECT *
 			  FROM ADT_CSY_MENU T1
@@ -398,21 +402,21 @@ BEGIN
 		
 	END
 	
-	
-EXCEPTION
-	WHEN NO_DATA_FOUND THEN
-           R_ERROR_CODE := -1;
-           
 	BEGIN --4.error
 	
 		*ORA-12899 
 			DB링크로 INSERT할때 열에대한값이너무큼 오류나오면
 			BACK 테이블로 CRATE TABLE SELECT 로 데이터 받은다음에 데이터만 다시 옮겨주자
+			
 		*ORA-01045
 			GRANT CREATE SESSION TO 유저명
 		
 	END
 	
+
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+           R_ERROR_CODE := -1;
 		   R_ERROR_MSG := 'DATA NOT FOUND';
            RETURN;
 	WHEN USER_CREATE_EXCEPTION THEN
