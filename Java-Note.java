@@ -184,12 +184,14 @@ public class java {
 	
 	public void java(){
 		
+		--------------------기본형식 --------------------
 		package ~
 		import ~
 		public class ~ (extends ~)
 			public~
 
 			public~
+		-------------------------------------------------
 
 		*xml(쿼리) 
 		파라메터 입력
@@ -198,11 +200,12 @@ public class java {
 		
 		*어노테이션 - 메타데이터
 		@Service
-		@Autowired
-		@SuppressWarnings
-		@Repository
+		@Autowired - 할당값 자동 주입
+		@SuppressWarnings - 경고메시지 억제용
+		@Repository - 데이터베이스에 접근하는 클래스
 		@Authorize
-
+		
+		*JQUERY - 자바스크립트 라이브러리
 		*MYBATIS - 객체지향 어플리케이션에서 관계형 데이터베이스를 쉽게 사용할 수 있도록 도와주는 데이터 맵핑 프레임워크이다.
 		*JSON(JavaScript Object Notation) name-value 형식의 쌍
 		{
