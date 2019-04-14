@@ -145,19 +145,12 @@ Public Class vb
 	End Sub
 	
 	Private sub notePad()
-		
-		로컬연결
-
-		SYS,본계정 둘다 로컬 TNS 따라감
-
-		배포
-
-		SYS,계정 둘다 배포 TNS 따라감
-
-		DB링크 등등은 DB서버 TNS 따라감
 
 		**프로젝트 안뜰때
 		해당 프로젝트 우클릭 기본항목추가해서 3개 추가해주면됨 이상한 이름은 지워주고
+		
+		**프로젝트 복사할때
+		.vb 파일 3개 이름바꿔주고 프로젝트 추가해서 이름바꿔주면됨
 
 		1.파일 옮기기
 		 개발단-프로젝트(Fms-폴더),EXE(Fms-bin-Debug),RPT(Fms-RPT-폴더),LANGUEAGE(Fms-bin-Debug-폴더)
@@ -182,7 +175,7 @@ Public Class vb
 		*화면추가후 sin 파일 올리기
 		*메인폼을 바꾸면 .app 안에있는 mainform.designer 올리기
 		 
-		2)화면에 있는 그리드값 가지고 오기
+		1)화면에 있는 그리드값 가지고 오기
 		Dim tempDs As DataSet = Me.ConvertToDataset 
 
 		2')해당안되는 그리드 제외시키기
@@ -191,7 +184,8 @@ Public Class vb
 								tempDs.Tables("DETAIL").Rows(i).Delete()
 							End If
 						Next
-						
+		exit for
+		
 		*테이블 삭제
 		 ds.Tables.Remove("Table")              
 

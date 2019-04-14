@@ -237,31 +237,100 @@ public class java {
 		let - block scoped
 		const - 초기선언후 재할당 불가능
 
-		5.extend,implement
+		5.extend,implement 차이점
 		extend - 상속(메소드 그대로 사용가능)
 		implement - 인터페이스(메소드 다시 선언후 사용가능)
 		https://hashcode.co.kr/questions/471/implements%EC%99%80-extends%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%9D%B4-%EB%AD%90%EA%B3%A0-%EA%B0%81%EA%B0%81-%EC%96%B8%EC%A0%9C-%EC%93%B0%EB%8A%94%EA%B1%B4%EA%B0%80%EC%9A%94
 
-		6.콘솔 쿼리로그 해결방법(logback.xml)
+		6.overide, overriding 차이점
+		
+		7.콘솔 쿼리로그 해결방법(logback.xml)
 		logback.xml 에서 sql,resultset TRACE로 권한변경
 		
+		8.public static final
+		값이 선언된 이후 변경할 수 없다.
 	}
 	
 	public void xml(){
 		
-		쿼리
-		<select id="SELECT_PORTAL_FIS_TRACKING_HTSV" resultType="java.util.HashMap">
+		--mybatis--
+		1.쿼리
+		
+		1).parameterType 전달해줄 값의 타입
+		2).resultType 반환받을 값의 타입
+		
+		//java call
+		List list = fisDao.queryForList("SELECT_PORTAL_FIS_TRACKING_HTSV", paramMap);
+		
+		//select
+		<select id="SELECT_PORTAL_FIS_TRACKING_HTSV" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+			//query
 		</select>
-		블럭
-		<if test='PAGE_SIZE != null and !PAGE_SIZE.equals("")'>
-		</if>
-		파라메터
+		
+		//java call
+		fisDao.insert("INSERT_MDM_SHED_MGT", rowMap);
+		
+		//insert
+		<insert id="INSERT_MDM_SHED_MGT" parameterType="java.util.HashMap">
+			//query
+		</insert>
+		
+		//java call
+		fisDao.update("UPDATE_PORTAL_AIR_BKG_FILE_DOC", rowMap);
+		
+		//update
+		<update id="UPDATE_PORTAL_AIR_BKG_FILE_DOC" parameterType="java.util.HashMap">
+			//query
+		</update>
+		
+		//java call
+		fisDao.delete("DELETE_MDM_SHED_MGT", rowMap);
+		
+		<delete id="DELETE_MDM_SHED_MGT" parameterType="java.util.HashMap">
+			//query
+		</delete>
+		
+		//java Procedure call
+		Map<String, Object> proParams = new HashMap<String, Object>();
+        
+	    proParams.put("I_CORP_CD", corpCd);
+	    proParams.put("I_OFFICE_CD", officeCd);
+	    proParams.put("I_MNGT_NO", fisUtils.checkNull(mainViewMap.get("MNGT_NO")));
+	    proParams.put("I_CUST_CD", fisUtils.checkNull(custMap.get("EXEC_PART_CD")));
+	    proParams.put("I_SELL_BUY_TYPE", "S");
+	    proParams.put("I_REQ_SVC", fisUtils.checkNull(mainViewMap.get("REQ_SVC")));
+	    proParams.put("I_MBL_HBL_TYPE", fisUtils.checkNull(mainViewMap.get("MBL_HBL_TYPE")));
+	    proParams.put("I_LANGUAGE_CODE", langCd);
+	    proParams.put("I_PROGRESS_GUID", "1");
+	    proParams.put("I_REQUEST_USER_ID", userId);
+        fisDao.queryForMap("hslp.fis.PROCD_SELL_TARIFF_FACTOR", proParams);
+		
+		//Procedure
+		<resultMap id="tariffSellFactorMap" type="java.util.HashMap"></resultMap> //resultMap id 충돌주의
+		<select id="PROCD_SELL_TARIFF_FACTOR" parameterType="java.util.HashMap" statementType="CALLABLE"> //프로시저 호출할때 statementType="CALLABLE" 사용해야함
+			//query
+		</select>
+		
+		2.주석 <!--  -->
+		
+		3.블럭
+		
+		<where>
+			<if test='PAGE_SIZE != null and !PAGE_SIZE.equals("")'>
+				//query
+			</if>
+		</where>
+		
+		1)if(단일조건),choose when otherwise(다중조건)
+		2)choose, when, otherwise
+		3)foreach
+		
+		4.파라메터
 		#{OFFICE_CD} - 문자열
 		${DYNAMIC_QUERY} - 쿼리
 		CDATA 쿼리에 닫힘태그 있을경우 사용함
 		<![CDATA[
 		]]>
-		!!xml id 충돌나면 컴파일 에러남, resultMap id도 중복x 필수확인
 		
 	}
 

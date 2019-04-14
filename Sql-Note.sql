@@ -38,15 +38,19 @@ BEGIN
 		9.JOIN 형식 (
 			(1)암시적 조인 - SELECT * 
 							   FROM FIRST_TABLE A1 
-						 INNER JOIN SECOND_TABLE A2 --INNER JOIN
-								 ON A1.NO1 = A2.NO1
+						 INNER JOIN SECOND_TABLE A2 --INNER JOIN(등가) & Natural
+								 ON A1.NO1 = A2.NO1 또는
+								 USING(NO1) 로 표현가능하다. --USING 절은 양쪽 테이블에 컬럼명이 같을경우 사용가능하다.
+						 INNER JOIN SECOND_TABLE A2 --INNER JOIN(비등가)
+								 ON A1.NO1 BETWEEN A2.LOW_DATA AND A2.HIGH_DATA
 						  LEFT JOIN SECOND_TABLE A2 --LEFT JOIN
 								 ON A1.NO1 = A2.
 						 RIGHT JOIN SECOND_TABLE A2 --RIGHT JOIN
 								 ON A1.NO1 = A2.NO1
 			(2)묵시적 조인 - SELECT * 
 			                   FROM FIRST_TABLE A1, SECOND_TABLE A2 
-							   WHERE A1.NO1    = A2.NO1    --INNER JOIN
+							   WHERE A1.NO1    = A2.NO1    --INNER JOIN(등가)
+							   WHERE A1.NO1 BETWEEN A2.LOW_DATA AND A2.HIGH_DATA --INNER JOIN(비등가)
 							   WHERE A1.NO1(+) = A2.NO1    --LEFT OUTER JOIN
 							   WHERE A1.NO1    = A2.NO1(+) --RIGHT OUTER JOIN
 		)
@@ -239,16 +243,15 @@ BEGIN
 		CTRL+SHIFT+F 쿼리정렬 (원하는 범위 선택후 사용하면됨)
 
 		*Data Grid에서 자료수정 (예제 테이블:FMS_HBL_MST)
+		SELECT ROWID,A.* FROM FMS_HBL_MST A (추천)
+		OR
+		EDIT FMS_HBL_MST
 
 		F11 디버깅
-
 		SHIFT + F8 디버깅 한단계씩 진행
-
-		View - Code Snippets 오라클 함수 목록
-
-		*간단한 쿼리문 가지고 오기
-
-		Schema Browser - 해당테이블 우클릭 - Generate Statement - Insert,Select,Update 중 클릭 후 붙여넣기
+		
+		나머지 toad11 셋팅 방법
+		https://betrider.tistory.com/45
 		
 	END
 	
@@ -299,18 +302,22 @@ BEGIN
 			
 		*IN 1000개 넘어갈때
 			SELECT * FROM XXX WHERE ID IN (1,2,3,..) -> SELECT * FROM XXX WHERE (0,ID) IN ((0,1), (0,2), (0,3)..)
-<<<<<<< HEAD
-			  
-=======
-			 
->>>>>>> dfb4862d3dd8c867642b6f82d37e8175ed36f55a
-		*계층형 쿼리 연결된값 전부 가져오기
+
+		*계층형 쿼리 연결된값 전부 가져오기(메뉴코드)
 			SELECT *
 			  FROM ADT_CSY_MENU T1
 			 WHERE APPCODE = 'C-PORTAL' AND MENUCODE LIKE 'PTL66%'
 			 START WITH SUPERMENUCODE = '-1'
-			CONNECT BY PRIOR MENUCODE = SUPERMENUCODE
+			 CONNECT BY PRIOR MENUCODE = SUPERMENUCODE
 			 ORDER SIBLINGS BY ORDERS ASC
+			 
+		*계층형 쿼리 연결된값 전부 가지고 오기(계정과목)
+			SELECT LPAD(' ',4*(LEVEL-1))||LEVEL||'.'||A.ACCT_NM||'('||A.ACCT_CD||')'
+		      FROM ACT_CODE_MST A
+		     WHERE A.OFFICE_CD = 'ABC'
+		     START WITH A.ACCT_CD = '3000'
+		     CONNECT BY PRIOR A.ACCT_CD = A.ACCM_ACCT_CD
+		     ORDER SIBLINGS BY A.ACCT_CD 
 			 
 		*합계와 총합계 같이표시
 			SELECT DO_NO,DO_ITEM,SUM(DO_QTY),SUM(DO_QTY) OVER(PARTITION BY DO_NO) FROM FMS_DO_DTL GROUP BY DO_NO,DO_ITEM,DO_QTY
@@ -329,30 +336,33 @@ BEGIN
 			(11)설정후 폴더안에다가 Webapp파일 통으로 넣으면된다.
 			
 		*테이블 데이터 확인
-			SELECT (CASE WHEN COUNT (*) = 0 THEN 'N' ELSE 'Y' END) AS LINK_YN
+			SELECT CASE WHEN COUNT (*) = 0 THEN 'N' ELSE 'Y' END AS LINK_YN
 			  FROM FMS_INV_DTL
 			 WHERE REF_INV_NO = #{REF_INV_NO} AND REF_FARE_SEQ = #{REF_FARE_SEQ}
 			 
 		*메시지 확인
-			DBMS_OUTPUT.PUT_LINE('Before DISABLE');
+			DBMS_OUTPUT.PUT_LINE('Before DISABLE')
 			
-		*테이블 백업
+		*테이블 백업(CREATE-SELECT)
 			CREATE TABLE CO_CUSTOMER_20170224
 			AS
 			SELECT * FROM CO_CUSTOMER
 			
+		*테이블 데이터 옮기기(INSERT-SELECT)
+			INSERT INTO CO_CUSTOMER_20170224 SELECT * FROM CO_CUSTOMER
+			
 		*oracle 덤프 빈테이블 안떠질때 
-			ALTER SYSTEM SET DEFERRED_SEGMENT_CREATION=FALSE SCOPE=BOTH; 
+			ALTER SYSTEM SET DEFERRED_SEGMENT_CREATION=FALSE SCOPE=BOTH
 			빈테이블일때 EXP 안된다. 위의명령어 실행. 
 			그이후 만들어진 테이블에만 적용됨. 
 
 		*ORACLE 덤프 설정변경
-			SELECT 'ALTER TABLE '||table_name||' ALLOCATE EXTENT;' FROM user_tables WHERE segment_created = 'NO'; 
+			SELECT 'ALTER TABLE '||table_name||' ALLOCATE EXTENT' FROM user_tables WHERE segment_created = 'NO'
 			해당계정으로 들어가서 실행하면 실행문이 나온다 이거 전체 결과 CTRL+C 해서 CTRL+V 해서 F5눌러서 해주면됨
 			이걸로 테이블 변경하고 EXP 받으면 된다.
 			
 		*드랍테이블 복구 
-			flashback table FMS_HBL_OTH to before drop;
+			flashback table FMS_HBL_OTH to before drop
 			
 		*원하는순서 ORDER BY
 			CASE WHEN CODE = 'AAA' THEN '1' WHEN CODE = 'BBB' THEN '2' ELSE '3' END
@@ -364,15 +374,28 @@ BEGIN
 			   AND (FARE_CD IN ('POD','POD0') AND 1=@FARE_CD_01 ) --도착보고비 
 				OR (FARE_CD IN ('SEC','SEC0') AND 1=@FARE_CD_02 ) --용역비  
 				OR (FARE_CD NOT IN ('TRK','TRK0','WCC','RTK','RTK0','CCHG','WAT','PKC','PKC0','POD','POD0','SEC','SEC0') AND 1=@FARE_CD_03 )
+				
+	END
+	
+	BEGIN --4.error
+	
+		*ORA-12899 
+			DB링크로 INSERT할때 열에대한값이너무큼 오류나오면
+			BACK 테이블로 CRATE TABLE SELECT 로 데이터 받은다음에 데이터만 다시 옮겨주자
 			
-			----------------------------오라클백업 명령어(데이터베이스)---------------------------------
+		*ORA-01045
+			GRANT CREATE SESSION TO 유저명
+		
+	END
+	
+	BEGIN --5.BACKUP
+		----------------------------오라클백업 명령어(데이터베이스)---------------------------------
 		풀 백업 : EXP USERID=SYSTEM/ORA2764 full=y file=d:\BACKUP\ORA11_EXP_%D%.dmp log=d:\BACKUP\ORA11_log_%D%.log
 
 		유저 백업(ELVIS_ABC) : EXP ELVIS_ABC/ELVIS_ABC FILE=E:\BACKUP_ABC\THU_EXP.DMP LOG=E:\BACKUP_ABC\THU_EXP.LOG
 		유저 백업(MOBILE) : EXP MOBILE/MOBILE FILE=E:\BACKUP_ABC\THU_EXP.DMP LOG=E:\BACKUP_ABC\THU_EXP.LOG                
-						
+	
 		--------------------------------오라클백업 명령어(클라이언트)---------------------------------
-
 		[계정백업 EXPORT]
 		exp 계정/아이디@tnsname owner=유저명 file=저장할 경로+파일명 log=저장할경로+파일명
 		exp SYSTEM/ORA2764@ABC.ELVIS.COM owner=MOBILE file=D:backup_mobile_20180208.dmp log=D:backup_mobile_20180208.log
@@ -399,18 +422,6 @@ BEGIN
 		exp userid=system/manager owner=scott file='C:\scott.dmp' 
 
 		imp userid=system/manager owner=scott file='C:\scott.dmp' 
-		
-	END
-	
-	BEGIN --4.error
-	
-		*ORA-12899 
-			DB링크로 INSERT할때 열에대한값이너무큼 오류나오면
-			BACK 테이블로 CRATE TABLE SELECT 로 데이터 받은다음에 데이터만 다시 옮겨주자
-			
-		*ORA-01045
-			GRANT CREATE SESSION TO 유저명
-		
 	END
 	
 
