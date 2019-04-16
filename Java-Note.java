@@ -107,6 +107,7 @@ public class java {
 		include : JSP 페이지의 특정 영역에 다른 문서 포함
 
 		------------------------------------------------------------------------------
+		
 		<%@page language="java" contentType="text/html; charset=UTF-8"%>
 		include header.jsp
 		include commonResource.jsp
