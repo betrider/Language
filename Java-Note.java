@@ -170,6 +170,11 @@ public class java {
 							}
 							});
 				}
+				
+				*배열값 있는지 확인
+					if(lccReqList.indexOf(data['DO_ITEM']) >= 0){
+    		
+					}
 
 				</script>
 			</head>

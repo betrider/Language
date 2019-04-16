@@ -73,7 +73,9 @@ BEGIN
 			(1)SUBSTR --SUBSTR(데이터,시작위치,길이) CHAR기준
 				SELECT SUBSTR('가나다라마',1,3) FROM DUAL => '가나다' 
 			(2)SUBSTRB --SUBSTRB(데이터,시작위치,길이) BYTE기준
-				SELECT SUBSTR('가나다라마',1,3) FROM DUAL => '가'    
+				SELECT SUBSTR('가나다라마',1,3) FROM DUAL => '가'  
+			(3)SUBSTR+INSTR --특정문자열 기준으로 문자열 가지고 오기
+				SELECT SUBSTR('tlsfpem@naver.com',1,(INSTR('tlsfpem@naver.com','@')-1)) FROM DUAL => 'tlsfpem'
 		)
 		15.문자열 길이체크 (
 			(1)LENGTH : SELECT LENGTH('가나다') FROM DUAL => 3   --LENGTH(데이터) CHAR기준
