@@ -189,6 +189,11 @@ public class java {
 		head : js 처리가 완료되어야 화면이 열린다.(가변운화면에서 좋음)
 		body : 화면이 열린 후 js가 처리된다.(무거운화면에서 좋음)
 		
+		*이메일 정규식
+		var emailRegex = /^(\w+)([\-+.][\w]+)*@(\w[\-\w]*\.){1,5}([A-Za-z]){2,6}$/;
+		emailRegex.test('tlsfpem@naver.com') => true
+		emailRegex.test('tlsfpem') => false
+		
 	}
 	
 	public void java(){
