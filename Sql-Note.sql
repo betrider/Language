@@ -304,6 +304,10 @@ BEGIN
 			
 		*IN 1000개 넘어갈때
 			SELECT * FROM XXX WHERE ID IN (1,2,3,..) -> SELECT * FROM XXX WHERE (0,ID) IN ((0,1), (0,2), (0,3)..)
+			
+		*이전 테이블 데이터 확인
+			SELECT * FROM TABLE_NAME
+				AS OF TIMESTAMP(TO_DATE('20131206140000', 'YYYYMMDDHH24MISS'));
 
 		*계층형 쿼리 연결된값 전부 가져오기(메뉴코드)
 			SELECT *
