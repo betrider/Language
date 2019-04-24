@@ -57,17 +57,21 @@ public class AndroidStudio {
 		[ jdk-7u80-windows-x64]
 		http://naver.me/FUWEWX4i 
 
-		 
-
 		[ apache-tomcat-7.0.62] 
 		http://naver.me/5Swmwz5y 
 		
 		-------------------------------------------------
 		
 		컨트롤 삭제 이름하나 삭제
+		
+		*API 버전 추가
+		tools -> Android -> SDK Manager -> SDK Platform 에서 체크하기
 
 		**안드로이드 스튜디오 APK서명하는법(배포로 올릴때는 서명해서 올려야함)
 		기존에 있을경우 불러오기해서 가지고오면됨
+		
+		*Your project path contains non-ASCII characters(오류)
+		상위폴더 한글인경우 전부 영어로 변경해줘야함
 
 		-INTENT 데이터넣기-
 		Intent popupIntent = new Intent(getApplicationContext(), Orq0001_popup_Activity.class); 
