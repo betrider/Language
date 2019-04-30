@@ -29,11 +29,11 @@ public class AndroidStudio {
 		하지만 중간에 중단점이 있으면 중단점까지 실행
 		Ctrl + Alt + F9 : 커서가 있는 위치까지 실행, 중간에 중단점이 있어도 무시
 		Ctrl + Shift + F8 : 모든 중단점 위치 확인
-		Ctrl + F2 : 디버그모드 종료. 일반 실행 모드로 전환
-		Cnrl + [ 코드 처음으로 이동
-		Ctrl + ] 코드 마지막으로 이동
-		Ctrl + Alt + Shift+ F7 사용하는곳 찾기
-		Ctrl + Alt + I 들여쓰기
+		Ctrl + F2 : 디버그모드 종료. 일반 실행 모드로 전환                                    
+		Cnrl + [ 코드 처음으로 이동                                                           
+		Ctrl + ] 코드 마지막으로 이동                                                         
+		Ctrl + Alt + Shift+ F7 사용하는곳 찾기                                                
+		Ctrl + Alt + I 들여쓰기                                                               
 		Ctrl + y 라인삭제
 		Ctrl + / 한줄주석
 		Ctrl+Shit+/ 블록주석
